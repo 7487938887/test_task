@@ -266,7 +266,6 @@ class User_model extends CI_Emerald_Model {
      */
     public static function get_all():array
     {
-
         $data = App::get_ci()->s->from(self::CLASS_TABLE)->many();
         $ret = [];
         foreach ($data as $i)
@@ -276,6 +275,23 @@ class User_model extends CI_Emerald_Model {
         return $ret;
     }
 
+	/**
+	 * @param string $field
+	 * @return array
+	 */
+    public static function get_distinct( string $field ):array
+    {
+    	return App::get_ci()->s->from(self::CLASS_TABLE)->distinct($field)->column($field);
+    }
+
+	/**
+	 * @param string $field
+	 * @return array
+	 */
+    public static function get_user_filter( string $field, string $value ):array
+    {
+    	return App::get_ci()->s->from(self::CLASS_TABLE)->where($field,$value)->one();
+    }
 
     /**
      * Getting id from session

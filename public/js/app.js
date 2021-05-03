@@ -57,9 +57,13 @@ var app = new Vue({
 			else{
 				self.invalidLogin = false
 				self.invalidPass = false
-				axios.post('/main_page/login', {
-					login: self.login,
-					password: self.pass
+
+                const formData = new FormData();
+                formData.append('login', self.login );
+                formData.append('password', self.pass );
+
+				axios.post('/main_page/login', formData,
+                    {headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				})
 					.then(function (response) {
 						setTimeout(function () {

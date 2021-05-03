@@ -109,6 +109,7 @@ switch (ENVIRONMENT)
  */
 $system_path = '../system';
 
+
 /*
  *---------------------------------------------------------------
  * APPLICATION FOLDER NAME

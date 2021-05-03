@@ -84,9 +84,9 @@ class Main_page extends MY_Controller
     }
 
 
-    public function login($user_id)
+    public function login()
     {
-        // Right now for tests we use from contriller
+        // Right now for tests we use from controller
         $login = App::get_ci()->input->post('login');
         $password = App::get_ci()->input->post('password');
 
@@ -96,8 +96,31 @@ class Main_page extends MY_Controller
 
         // But data from modal window sent by POST request.  App::get_ci()->input...  to get it.
 
-
         //Todo: 1 st task - Authorisation.
+	    // START
+        $auth_by = filter_var( $login, FILTER_VALIDATE_EMAIL ) ? 'email' : 'personaname';
+        $user_data = User_model::get_distinct($auth_by);
+
+        // User not found
+        if( !in_array( $login, $user_data ) )
+        {
+	        return $this->response_error(CI_Core::RESPONSE_GENERIC_WRONG_PARAMS);
+        }
+
+        // Check password without encryption ONLY for test reasons
+	    $user = User_model::get_user_filter( $auth_by, $login );
+
+        if( $user['password'] !== $password )
+        {
+	        return $this->response_error(CI_Core::RESPONSE_GENERIC_WRONG_PARAMS);
+        }
+
+	    $user_id = $user['id'];
+	    // END
+
+	    var_dump( interface_exists( 'User_model' ) );
+	    var_dump( class_exists( 'User_model' ) );
+	    exit;
 
         Login_model::start_session($user_id);
 
